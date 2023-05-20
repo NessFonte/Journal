@@ -25,7 +25,7 @@
     <textarea placeholder="¿Qué sucedió hoy?"></textarea>
   </div>
 
-  <Fab />
+  <Fab icon="fa-save"/>
 
   <img class="img-thumbnail" src="../assets/vue.jpg" alt="entry-picture">
 </template>
