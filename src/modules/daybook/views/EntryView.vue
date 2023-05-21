@@ -1,9 +1,9 @@
 <template>
   <div class="entry-title d-flex justify-content-between p-2">
     <div>
-      <span class="text-success fs-5 fw-bold">20</span>
-      <span class="mx-1 fs-5">Mayo</span>
-      <span class="text-info mx-1 fs-5">2023, sábado</span>
+      <span class="text-success fs-5 fw-bold">{{ day }}</span>
+      <span class="mx-1 fs-5">{{ month }}</span>
+      <span class="text-info mx-1 fs-5">{{ year }}</span>
     </div>
 
     <div>
@@ -22,7 +22,7 @@
   <hr>
 
   <div class="d-flex flex-column px-3 h-75">
-    <textarea placeholder="¿Qué sucedió hoy?"></textarea>
+    <textarea placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
   </div>
 
   <Fab icon="fa-save"/>
@@ -33,6 +33,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import { mapGetters } from 'vuex'
+import getDate from '@/modules/daybook/helpers/getDate.js'
 
 export default {
   props: {
@@ -43,17 +44,40 @@ export default {
   },
 
   components: {
-    Fab: defineAsyncComponent(() => import('../components/Fab.vue'))
+    Fab: defineAsyncComponent(() => import('../components/Fab.vue')),
   },
 
   computed: {
-    ...mapGetters('journal', ['getEntryById'])
+    ...mapGetters('journal', ['getEntryById']),
+
+    day() {
+      const {day} = getDate(this.entry.date)
+      return day
+    },
+
+    month() {
+      const {month} = getDate(this.entry.date)
+      return month
+    },
+
+    year() {
+      const {year} = getDate(this.entry.date)
+      return year
+    },
+  },
+
+  data() {
+    return {
+      entry: null
+    }
   },
 
   methods: {
     loadEntry() {
       const entry = this.getEntryById(this.id)
-      console.log(entry)
+      if(!entry) this.$router.push({name: 'no-entry'})
+
+      this.entry = entry
     }
   },
 
