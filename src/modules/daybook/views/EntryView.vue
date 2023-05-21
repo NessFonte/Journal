@@ -25,14 +25,14 @@
     <textarea placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
   </div>
 
-  <Fab icon="fa-save"/>
+  <Fab icon="fa-save" @on-click="saveEntry"/>
 
   <img class="img-thumbnail" src="../assets/vue.jpg" alt="entry-picture">
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import getDate from '@/modules/daybook/helpers/getDate.js'
 
 export default {
@@ -73,11 +73,17 @@ export default {
   },
 
   methods: {
+    ...mapActions('journal', ['updateEntry']),
+
     loadEntry() {
       const entry = this.getEntryById(this.id)
       if(!entry) return this.$router.push({name: 'no-entry'})
 
       this.entry = entry
+    },
+
+    async saveEntry() {
+      this.updateEntry(this.entry)
     }
   },
 

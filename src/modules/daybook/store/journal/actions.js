@@ -9,12 +9,15 @@ export const loadEntries = async ({commit}) => {
             ...data[id]
         })
     }
-
     commit('setEntries', entries)
 }
 
-export const updateEntry = async ({commit}) => {
+export const updateEntry = async ({commit}, entry) => {
+    const {date, picture, text} = entry
+    const dataToSave = {date, picture, text}
 
+    await axios.put(`https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries/${entry.id}.json`, dataToSave)
+    commit('updateEntry', {...entry})
 }
 
 export const createEntry = async ({commit}) => {
