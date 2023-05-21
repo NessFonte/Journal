@@ -1,5 +1,5 @@
 <template>
-  <div class="entry-title d-flex justify-content-between p-2">
+  <div v-if="entry" class="entry-title d-flex justify-content-between p-2">
     <div>
       <span class="text-success fs-5 fw-bold">{{ day }}</span>
       <span class="mx-1 fs-5">{{ month }}</span>
@@ -21,7 +21,7 @@
   
   <hr>
 
-  <div class="d-flex flex-column px-3 h-75">
+  <div v-if="entry" class="d-flex flex-column px-3 h-75">
     <textarea placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
   </div>
 
@@ -36,6 +36,12 @@ import { mapGetters } from 'vuex'
 import getDate from '@/modules/daybook/helpers/getDate.js'
 
 export default {
+  data() {
+    return {
+      entry: null
+    }
+  },
+
   props: {
     id: {
       type: String,
@@ -66,16 +72,10 @@ export default {
     },
   },
 
-  data() {
-    return {
-      entry: null
-    }
-  },
-
   methods: {
     loadEntry() {
       const entry = this.getEntryById(this.id)
-      if(!entry) this.$router.push({name: 'no-entry'})
+      if(!entry) return this.$router.push({name: 'no-entry'})
 
       this.entry = entry
     }
@@ -83,6 +83,12 @@ export default {
 
   created() {
     this.loadEntry() 
+  },
+
+  watch: {
+    id() {
+      this.loadEntry()
+    }
   }
 }
 </script>
