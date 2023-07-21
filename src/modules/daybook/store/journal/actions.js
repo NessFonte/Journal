@@ -2,6 +2,11 @@ import axios from "axios"
 
 export const loadEntries = async ({commit}) => {
     const {data} = await axios.get('https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries.json')
+    if(!data) {
+        commit('setEntires', [])
+        return
+    }
+    
     const entries = []
     for(let id of Object.keys(data)) {
         entries.push({
@@ -29,4 +34,11 @@ export const createEntry = async ({commit}, entry) => {
     commit('createEntry', dataToSave)
 
     return data.name
+}
+
+export const deleteEntry = async ({commit}, entry) => {
+    await axios.delete(`https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries/${entry.id}.json`)
+    commit('deleteEntry', {...entry})
+
+    return entry.id
 }
