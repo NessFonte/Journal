@@ -25,8 +25,8 @@ export default {
     computed: {
         shortText() {
             return (this.entry.text.length > 150)
-                ? this.entry.text.substring(0,150) + '...'
-                : this.entry.text
+            ? this.entry.text.substring(0,150) + '...'
+            : this.entry.text
         },
 
         day() {

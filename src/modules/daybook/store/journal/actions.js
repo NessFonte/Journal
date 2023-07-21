@@ -20,6 +20,13 @@ export const updateEntry = async ({commit}, entry) => {
     commit('updateEntry', {...entry})
 }
 
-export const createEntry = async ({commit}) => {
+export const createEntry = async ({commit}, entry) => {
+    const {date, picture, text} = entry
+    const dataToSave = {date, picture, text}
 
+    const {data} = await axios.post(`https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries.json`, dataToSave)
+    dataToSave.id = data.name
+    commit('createEntry', dataToSave)
+
+    return data.name
 }
