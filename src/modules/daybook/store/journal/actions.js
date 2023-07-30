@@ -1,7 +1,7 @@
-import axios from "axios"
+import journalApi from "@/api/journalApi"
 
 export const loadEntries = async ({commit}) => {
-    const {data} = await axios.get('https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries.json')
+    const {data} = await journalApi.get('/entries.json')
     if(!data) {
         commit('setEntires', [])
         return
@@ -21,7 +21,7 @@ export const updateEntry = async ({commit}, entry) => {
     const {date, picture, text} = entry
     const dataToSave = {date, picture, text}
 
-    await axios.put(`https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries/${entry.id}.json`, dataToSave)
+    await journalApi.put(`/entries/${entry.id}.json`, dataToSave)
     commit('updateEntry', {...entry})
 }
 
@@ -29,7 +29,7 @@ export const createEntry = async ({commit}, entry) => {
     const {date, picture, text} = entry
     const dataToSave = {date, picture, text}
 
-    const {data} = await axios.post(`https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries.json`, dataToSave)
+    const {data} = await journalApi.post(`/entries.json`, dataToSave)
     dataToSave.id = data.name
     commit('createEntry', dataToSave)
 
@@ -37,7 +37,7 @@ export const createEntry = async ({commit}, entry) => {
 }
 
 export const deleteEntry = async ({commit}, entry) => {
-    await axios.delete(`https://vue-journal-c2a80-default-rtdb.firebaseio.com/entries/${entry.id}.json`)
+    await journalApi.delete(`/entries/${entry.id}.json`)
     commit('deleteEntry', {...entry})
 
     return entry.id

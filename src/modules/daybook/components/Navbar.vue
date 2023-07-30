@@ -21,7 +21,6 @@ export default {
     setup() {
         const router = useRouter()
         const {username, logout} = useAuth()   
-        console.log(username);
         
         return {
             username,
