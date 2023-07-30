@@ -31,11 +31,14 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 import useAuth from '@/modules/auth/composables/useAuth.js'
 
 export default {
 	setup() {
+		const router = useRouter()
 		const {createUser} = useAuth()
 		const userForm = ref({
 			name: '',
@@ -48,7 +51,16 @@ export default {
 
 			onSubmit: async() => {
 				const {ok, message} = await createUser(userForm.value)
-				console.log(ok, message);
+				
+				if(!ok) {
+					if(message == 'EMAIL_EXISTS') {
+						const message_error = 'Ya existe una cuenta con ese correo'
+						Swal.fire('Error!!!', message_error, 'error')
+					}
+				}
+				else {
+					router.push({name: 'no-entry'})
+				}
 			}
 		}
 	}
