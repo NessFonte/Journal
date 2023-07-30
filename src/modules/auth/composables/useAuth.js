@@ -8,8 +8,14 @@ const useAuth = () => {
         return resp
     }
 
+    const loginUser = async(user) => {
+        const resp = await store.dispatch('auth/singInUser', user)
+        return resp
+    }
+
     return {
         createUser,
+        loginUser,
     }
 
 }

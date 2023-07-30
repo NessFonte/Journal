@@ -53,10 +53,7 @@ export default {
 				const {ok, message} = await createUser(userForm.value)
 				
 				if(!ok) {
-					if(message == 'EMAIL_EXISTS') {
-						const message_error = 'Ya existe una cuenta con ese correo'
-						Swal.fire('Error!!!', message_error, 'error')
-					}
+					Swal.fire('Error!!!', message, 'error')
 				}
 				else {
 					router.push({name: 'no-entry'})
